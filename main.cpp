@@ -1,4 +1,5 @@
 #include <GL/freeglut.h> // nu trebuie uitat freeglut.h (sau glut.h sau gl.h & glu.h)
+#include <bits/stdc++.h>
 #define LEG_W 22
 #define LEG_H 94
 #define ARM_W 16
@@ -31,6 +32,15 @@ struct Coord {
 		}
 };
 
+struct Point {
+	double x, y;
+	public:
+		Point(double x, double y) {
+			this->x = x;
+			this->y = y;
+		}
+};
+
 namespace Colors {
 
 	RGB FACE = RGB(253, 224, 194);
@@ -43,6 +53,9 @@ namespace Colors {
 	RGB LIGHT_BLUE_ONE = RGB(144, 179, 173);
 	RGB LIGHT_BLUE_TWO = RGB(143, 211, 220);
 	RGB RED = RGB(216, 35, 42);
+	RGB WALDO_JEANS = RGB(81, 129, 193);
+	RGB WHITE = RGB(255, 255, 255);
+	RGB BLACK = RGB(0, 0, 0);
 
 }
 
@@ -77,6 +90,17 @@ namespace Draw {
 		glColor3f(Colors::GRASS.R, Colors::GRASS.G, Colors::GRASS.B);
 		glRecti(GRASS_COORD.x1, GRASS_COORD.y1, GRASS_COORD.x2, GRASS_COORD.y2);
 	}
+
+	void print_text(Point P, std::string text, RGB color, int size) {
+		// type = 1 -> HEADING, type = 2 -> SUBTITLE, type = 3 -> NORMAL
+		glColor3f(color.R, color.G, color.B);
+		for (int i = 0; i < text.size(); i++) {
+			glRasterPos2i(P.x + i * size, P.y);
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
+			
+		}
+	}
+
 }
 
 void init (void) {
@@ -87,11 +111,13 @@ void init (void) {
 void desen (void) {
 
 	Draw::grass();
-	Draw::person(Coord(100, 200, 0, 0), Colors::YELLOW, Colors::PURPLE);
-	Draw::person(Coord(300, 200, 0, 0), Colors::BLUE, Colors::DARK_BLUE);
-	Draw::person(Coord(500, 200, 0, 0), Colors::LIGHT_BLUE_ONE, Colors::DARK_BLUE);
-	Draw::person(Coord(700, 200, 0, 0), Colors::YELLOW, Colors::PURPLE);
-	Draw::person(Coord(900, 200, 0, 0), Colors::LIGHT_BLUE_TWO, Colors::DARK_BLUE);
+	Draw::print_text(Point(250, 750), "WHERE'S WALLY", Colors::RED, 50);
+	Draw::print_text(Point(250, 700), "Social Distancing Edition", Colors::BLACK, 30);
+	Draw::person(Coord(150, 200, 0, 0), Colors::YELLOW, Colors::PURPLE);
+	Draw::person(Coord(350, 200, 0, 0), Colors::BLUE, Colors::DARK_BLUE);
+	Draw::person(Coord(550, 200, 0, 0), Colors::LIGHT_BLUE_ONE, Colors::DARK_BLUE);
+	Draw::person(Coord(750, 200, 0, 0), Colors::RED, Colors::WALDO_JEANS); // Waldo 
+	Draw::person(Coord(950, 200, 0, 0), Colors::LIGHT_BLUE_TWO, Colors::DARK_BLUE);
 	glFlush();
 	
 
